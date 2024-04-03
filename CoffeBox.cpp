@@ -8,8 +8,9 @@ double const PRICE_ESPRESSO = 2.50;
 double const PRICE_CAPPUCCINO = 2.50;
 
 double mainBalance = 0.0;
+int numberOfCups = 0;
 
-void callServiceMenu();
+void printServiceMenu();
 
 void callService();
 
@@ -17,18 +18,17 @@ void callMainMenu(double currentBalance);
 
 double insertCoins();
 
-void getLatte();
-
-void getEspresso();
-
-void getCappuccino();
+void getCoffee(int choice);
 
 void printCoffeeIsDone();
 
 bool checkCurrentBalance(double currentBalance, double price);
 
+void checkNumberOfCups();
+
 int main() {
     int choice = 0;
+    double balanceIncrement = 0;
     double currentBalance = 0;
     while (1) {
         callMainMenu(currentBalance);
@@ -37,28 +37,33 @@ int main() {
         if (choice == 0)
             callService();
         else if (choice == 1) {
-            currentBalance += insertCoins();
-            mainBalance += insertCoins();
+            balanceIncrement = insertCoins();
+            currentBalance += balanceIncrement;
+            mainBalance += balanceIncrement;
         } else if (choice == 2) {
-            if (checkCurrentBalance(currentBalance, PRICE_LATTE)){
-                getLatte();
+            if (checkCurrentBalance(currentBalance, PRICE_LATTE)) {
+                checkNumberOfCups();
+                getCoffee(choice);
                 currentBalance -= PRICE_LATTE;
             }
         } else if (choice == 3) {
-            if (checkCurrentBalance(currentBalance, PRICE_ESPRESSO)){
-                getEspresso();
+            if (checkCurrentBalance(currentBalance, PRICE_ESPRESSO)) {
+                checkNumberOfCups();
+                getCoffee(choice);
                 currentBalance -= PRICE_ESPRESSO;
             }
         } else if (choice == 4) {
-            if (checkCurrentBalance(currentBalance, PRICE_CAPPUCCINO)){
-                getCappuccino();
+            if (checkCurrentBalance(currentBalance, PRICE_CAPPUCCINO)) {
+                checkNumberOfCups();
+                getCoffee(choice);
                 currentBalance -= PRICE_CAPPUCCINO;
             }
         } else if (choice == -1) {
             break;
         } else {
+            system("cls");
             cout << "Error! Incorrect data.";
-            return -1;
+            Sleep(3000);
         }
 
     }
@@ -69,7 +74,7 @@ void callService() {
     int choice = 0;
 
     while (1) {
-        callServiceMenu();
+        printServiceMenu();
         cin >> choice;
     }
 
@@ -87,13 +92,12 @@ void callMainMenu(double currentBalance) {
     cout << endl;
     cout << endl;
     cout << "(0) Service" << endl;
-    cout << "(-1) Exit" << endl;
     cout << endl;
-    cout << "             Balance: " << currentBalance << " BYN" << endl;
+    cout << "                Balance: " << currentBalance << " BYN" << endl;
     return;
 }
 
-void callServiceMenu() {
+void printServiceMenu() {
     system("cls");
     cout << "Choose your option:\n" << endl;
     cout << "(1) Show balance" << endl;
@@ -108,39 +112,18 @@ void callServiceMenu() {
 }
 
 double insertCoins() {
-    return 5;
-}
+    double roubles = 0;
+    double kopecks = 0;
+    double balanceIncrement = 0;
 
-void getLatte() {
-    for (int i = 20; i > 0; --i) {
-        system("cls");
-        cout << "Making latte..." << endl;
-        cout << i << " seconds left\n";
-        Sleep(1000);
-    }
-    printCoffeeIsDone();
+    system("cls");
+    cout << "Insert rouble coins" << endl;
+    cin >> roubles;
+    cout << "Insert kopeck coins" << endl;
+    cin >> kopecks;
 
-}
-
-void getEspresso() {
-    for (int i = 20; i > 0; --i) {
-        system("cls");
-        cout << "Making espresso..." << endl;
-        cout << i << " seconds left\n";
-        Sleep(1000);
-    }
-    printCoffeeIsDone();
-
-}
-
-void getCappuccino() {
-    for (int i = 20; i > 0; --i) {
-        system("cls");
-        cout << "Making cappuccino..." << endl;
-        cout << i << " seconds left\n";
-        Sleep(1000);
-    }
-    printCoffeeIsDone();
+    balanceIncrement = roubles + kopecks / 100;
+    return balanceIncrement;
 }
 
 void printCoffeeIsDone() {
@@ -150,8 +133,8 @@ void printCoffeeIsDone() {
     Sleep(4000);
 }
 
-bool checkCurrentBalance(double currentBalance, double price){
-    if (currentBalance < price){
+bool checkCurrentBalance(double currentBalance, double price) {
+    if (currentBalance < price) {
         system("cls");
         cout << "Not enough money on balance!" << endl;
     } else {
@@ -160,3 +143,27 @@ bool checkCurrentBalance(double currentBalance, double price){
     Sleep(4000);
     return false;
 }
+
+void getCoffee(int choice) {
+    for (int i = 20; i > 0; --i) {
+        system("cls");
+        if (choice == 2)
+            cout << "Making Latte..." << endl;
+        if (choice == 3)
+            cout << "Making Espresso" << endl;
+        if (choice == 4)
+            cout << "Making Cappuccino" << endl;
+        cout << i << " seconds left\n";
+        Sleep(1000);
+    }
+    printCoffeeIsDone();
+
+    return;
+}
+
+void checkNumberOfCups() {
+    if (numberOfCups < 0)
+        cout << "Sorry, out of cups";
+    return;
+}
+

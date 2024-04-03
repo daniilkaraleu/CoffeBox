@@ -6,6 +6,7 @@ using namespace std;
 double const PRICE_LATTE = 2.50;
 double const PRICE_ESPRESSO = 2.50;
 double const PRICE_CAPPUCCINO = 2.50;
+int const PIN = 7815;
 
 double mainBalance = 0.0;
 int numberOfCups = 0;
@@ -25,6 +26,12 @@ void printCoffeeIsDone();
 bool checkCurrentBalance(double currentBalance, double price);
 
 void checkNumberOfCups();
+
+void printServiceEntrance();
+
+void printBalance(double cashRemain);
+
+void printCups(int numberOfCoffeeCups);
 
 int main() {
     int choice = 0;
@@ -71,14 +78,69 @@ int main() {
 }
 
 void callService() {
-    int choice = 0;
 
-    while (1) {
-        printServiceMenu();
-        cin >> choice;
+    int serviceEntranceChoise = 0;
+    int serviceChoise = 0;
+    int usersPIN = 0;
+    int cups = 0;
+
+    while (true) {
+
+        system("clear");
+        printServiceEntrance();
+        cin >> serviceEntranceChoise;
+
+        if (serviceEntranceChoise == 1) {
+            system("clear");
+            cout << "Please, enter PIN code: ";
+            cin >> usersPIN;
+            if (usersPIN == PIN) {
+                while (true) {
+                    system("clear");
+                    printCups(numberOfCups);
+                    printBalance(mainBalance);
+                    printServiceMenu();
+                    cin >> serviceChoise;
+                    if (serviceChoise == 1) {
+                        system("clear");
+                        cout << "Please, insert cups: " << endl;
+                        cin >> cups;
+                        numberOfCups += cups;
+                    }
+                    else if (serviceChoise == 2) {
+                        system("clear");
+                        cout << "Revenue withdrawn" << endl << endl;
+                        mainBalance = 0;
+                        Sleep(1500);
+                        continue;
+                    }
+                    else if (serviceChoise == 3){
+                        break;
+                    }
+                    else {
+                        system("clear");
+                        cout << "Error! Incorrect input.";
+                        Sleep(1500);
+                        break;
+                    }
+                }
+            }
+            else {
+                system("clear");
+                cout << "Error! Incorrect PIN. Try again." << endl;
+                Sleep(1500);
+                continue;
+            }
+        }
+        else if (serviceEntranceChoise == 2) {
+            break;
+        }
+        else {
+            system("clear");
+            cout << "Error! Incorrect input.";
+            break;
+        }
     }
-
-    return;
 }
 
 void callMainMenu(double currentBalance) {
@@ -97,18 +159,24 @@ void callMainMenu(double currentBalance) {
     return;
 }
 
-void printServiceMenu() {
-    system("cls");
-    cout << "Choose your option:\n" << endl;
-    cout << "(1) Show balance" << endl;
-    cout << "(2) Check the number of coffee cups" << endl;
-    cout << "(3) Withdraw proceeds" << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << "(-1) Exit" << endl;
+void printServiceEntrance() {
+    system("clear");
+    cout << "Service Entrance Menu" << endl;
+    cout << "(1) Enter PIN" << endl << "(2) Exit" << endl;
+}
 
-    return;
+void printServiceMenu() {  
+    cout << "(1) Insert cups" << endl;
+    cout << "(2) Withdraw proceeds" << endl;
+    cout << "(3) Exit" << endl;
+}
+
+void printBalance(double cashRemain) {
+    cout << "total revenue of the machine is " << cashRemain << " BYN" << endl;
+}
+
+void printCups(int numberOfCoffeeCups) {
+    cout << "Current number of cups is " << numberOfCoffeeCups << " and"<< endl;
 }
 
 double insertCoins() {

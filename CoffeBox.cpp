@@ -29,20 +29,32 @@ bool checkNumberOfCups();
 
 void printServiceEntrance();
 
-void printBalance(double cashRemain);
+void addCups();
 
-void printCups(int numberOfCoffeeCups);
+void getRevenue();
+
+//void printBalance(double cashRemain);
+
+//void printCups(int numberOfCoffeeCups);
 
 int main() {
     int choice = 0;
     double balanceIncrement = 0;
     double currentBalance = 0;
+    int usersPIN = 0;
     while (1) {
         callMainMenu(currentBalance);
         cin >> choice;
 
-        if (choice == 5)
-            callService();
+        if (choice == 5){
+            printServiceEntrance();
+            cin >> usersPIN;
+            if (usersPIN == PIN)
+                callService();
+            else
+                cout << "Incorrect PIN. Try again\n";
+                continue;
+        }
         else if (choice == 1) {
             if (checkNumberOfCups()) {
                 balanceIncrement = insertCoins();
@@ -80,65 +92,28 @@ int main() {
 
 void callService() {
 
-    int serviceEntranceChoise = 0;
     int serviceChoise = 0;
-    int usersPIN = 0;
-    int cups = 0;
 
     while (true) {
 
         system("clear");
-        printServiceEntrance();
-        cin >> serviceEntranceChoise;
+        printServiceMenu();
+        cin >> serviceChoise;
 
-        if (serviceEntranceChoise == 1) {
-            system("clear");
-            cout << "Please, enter PIN code: ";
-            cin >> usersPIN;
-            if (usersPIN == PIN) {
-                while (true) {
-                    system("clear");
-                    printCups(numberOfCups);
-                    printBalance(mainBalance);
-                    printServiceMenu();
-                    cin >> serviceChoise;
-                    if (serviceChoise == 1) {
-                        system("clear");
-                        cout << "Please, insert cups: " << endl;
-                        cin >> cups;
-                        numberOfCups += cups;
-                    }
-                    else if (serviceChoise == 2) {
-                        system("clear");
-                        cout << "Revenue withdrawn" << endl << endl;
-                        mainBalance = 0;
-                        Sleep(1500);
-                        continue;
-                    }
-                    else if (serviceChoise == 3){
-                        break;
-                    }
-                    else {
-                        system("clear");
-                        cout << "Error! Incorrect input.";
-                        Sleep(1500);
-                        break;
-                    }
-                }
-            }
-            else {
-                system("clear");
-                cout << "Error! Incorrect PIN. Try again." << endl;
-                Sleep(1500);
-                continue;
-            }
+        if (serviceChoise == 1) {
+            addCups();
         }
-        else if (serviceEntranceChoise == 2) {
+        else if (serviceChoise == 2) {
+            getRevenue();
+            continue;
+        }
+        else if (serviceChoise == 3){
             break;
         }
         else {
             system("clear");
             cout << "Error! Incorrect input.";
+            Sleep(1500);
             break;
         }
     }
@@ -158,21 +133,30 @@ void callMainMenu(double currentBalance) {
 void printServiceEntrance() {
     system("clear");
     cout << "Service Entrance Menu" << endl;
-    cout << "(1) Enter PIN" << endl << "(2) Exit" << endl;
+    cout << "Enter PIN: ";
 }
 
-void printServiceMenu() {  
+void printServiceMenu() {
+    cout << "Current number of cups is " << numberOfCups << " and"<< endl; 
+    cout << "total revenue of the machine is " << mainBalance << " BYN" << endl; 
     cout << "(1) Insert cups" << endl;
     cout << "(2) Withdraw proceeds" << endl;
     cout << "(3) Exit" << endl;
 }
 
-void printBalance(double cashRemain) {
-    cout << "total revenue of the machine is " << cashRemain << " BYN" << endl;
+void addCups() {
+    system("clear");
+    int cups = 0;
+    cout << "Please, insert cups: " << endl;
+    cin >> cups;
+    numberOfCups += cups;
 }
 
-void printCups(int numberOfCoffeeCups) {
-    cout << "Current number of cups is " << numberOfCoffeeCups << " and"<< endl;
+void getRevenue() {
+    system("clear");
+    cout << "Revenue withdrawn" << endl << endl;
+    Sleep(1500);
+    mainBalance = 0;
 }
 
 double insertCoins() {
@@ -236,4 +220,3 @@ bool checkNumberOfCups() {
     }
     return true;
 }
-

@@ -3,9 +3,9 @@
 
 using namespace std;
 
-double const PRICE_LATTE = 2.50;
-double const PRICE_ESPRESSO = 2.50;
-double const PRICE_CAPPUCCINO = 2.50;
+double const PRICE_LATTE = 1.9;
+double const PRICE_ESPRESSO = 1.9;
+double const PRICE_CAPPUCCINO = 1.9;
 int const PIN = 7815;
 
 double mainBalance = 0.0;
@@ -33,10 +33,6 @@ void addCups();
 
 void getRevenue();
 
-//void printBalance(double cashRemain);
-
-//void printCups(int numberOfCoffeeCups);
-
 int main() {
     int choice = 0;
     double balanceIncrement = 0;
@@ -51,9 +47,12 @@ int main() {
             cin >> usersPIN;
             if (usersPIN == PIN)
                 callService();
-            else
+            else{
+                system("cls");
                 cout << "Incorrect PIN. Try again\n";
-                continue;
+                Sleep(2500);
+            }
+            continue;
         }
         else if (choice == 1) {
             if (checkNumberOfCups()) {
@@ -96,7 +95,7 @@ void callService() {
 
     while (true) {
 
-        system("clear");
+        system("cls");
         printServiceMenu();
         cin >> serviceChoise;
 
@@ -111,7 +110,7 @@ void callService() {
             break;
         }
         else {
-            system("clear");
+            system("cls");
             cout << "Error! Incorrect input.";
             Sleep(1500);
             break;
@@ -131,7 +130,7 @@ void callMainMenu(double currentBalance) {
 }
 
 void printServiceEntrance() {
-    system("clear");
+    system("cls");
     cout << "Service Entrance Menu" << endl;
     cout << "Enter PIN: ";
 }
@@ -145,7 +144,7 @@ void printServiceMenu() {
 }
 
 void addCups() {
-    system("clear");
+    system("cls");
     int cups = 0;
     cout << "Please, insert cups: " << endl;
     cin >> cups;
@@ -153,7 +152,7 @@ void addCups() {
 }
 
 void getRevenue() {
-    system("clear");
+    system("cls");
     cout << "Revenue withdrawn" << endl << endl;
     Sleep(1500);
     mainBalance = 0;
@@ -166,9 +165,9 @@ double insertCoins() {
 
     system("cls");
     checkNumberOfCups();
-    cout << "Insert rouble coins:" << endl;
+    cout << "Insert rouble coins[1,2]" << endl;
     cin >> roubles;
-    cout << "Insert kopeck coins:" << endl;
+    cout << "Insert kopeck coins[1..50]" << endl;
     cin >> kopecks;
 
     balanceIncrement = roubles + kopecks / 100;
@@ -215,7 +214,7 @@ bool checkNumberOfCups() {
     if (numberOfCups < 1) {
         system("cls");
         cout << "Sorry, out of cups" << endl;
-        Sleep(4000);
+        Sleep(3500);
         return false;
     }
     return true;

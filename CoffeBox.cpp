@@ -38,7 +38,7 @@ int main() {
     double balanceIncrement = 0;
     double currentBalance = 0;
     int usersPIN = 0;
-    while (1) {
+    while (true) {
         callMainMenu(currentBalance);
         cin >> choice;
 

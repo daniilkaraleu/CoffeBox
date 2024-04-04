@@ -136,8 +136,8 @@ void printServiceEntrance() {
 }
 
 void printServiceMenu() {
-    cout << "Current number of cups is " << numberOfCups << " and"<< endl; 
-    cout << "total revenue of the machine is " << mainBalance << " BYN" << endl; 
+    cout << "Current number of cups is " << numberOfCups << " and"<< endl;
+    cout << "total revenue of the machine is " << mainBalance << " BYN" << endl;
     cout << "(1) Insert cups" << endl;
     cout << "(2) Withdraw proceeds" << endl;
     cout << "(3) Exit" << endl;
@@ -159,21 +159,20 @@ void getRevenue() {
 }
 
 double insertCoins() {
-    double roubles = 0;
-    double kopecks = 0;
+    double coins = 0;
     double balanceIncrement = 0;
 
     system("cls");
     checkNumberOfCups();
-    cout << "Insert rouble coins[1,2]" << endl;
-    cin >> roubles;
-    cout << "Insert kopeck coins[1..50]" << endl;
-    cin >> kopecks;
+    cout << "Insert rouble coin[1, 2] or kopeck coin[10, 20, 50]" << endl;
+    cin >> coins;
 
-    balanceIncrement = roubles + kopecks / 100;
+    if (coins > 2)
+        balanceIncrement = coins / 100;
+    else
+        balanceIncrement = coins;
     return balanceIncrement;
-}
-
+}//
 void printCoffeeIsDone() {
     system("cls");
     cout << "Done!" << endl;

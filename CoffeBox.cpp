@@ -4,42 +4,34 @@
 
 using namespace std;
 
-double const PRICE_LATTE = 1.9;
+double const PRICE_LATTE = 2.3;
 double const PRICE_ESPRESSO = 1.9;
-double const PRICE_CAPPUCCINO = 1.9;
+double const PRICE_CAPPUCCINO = 2.3;
 int const PIN = 7815;
 int const TIMES_REPEAT = 3;
+int const SLEEP = 2500;
+int const COFFEE_MAKING = 20;
+int const MAX_OF_CUPS = 700;
 
 double mainBalance = 0.0;
-int numberOfCups = 2;
+int numberOfCups = 7;
 
 void printServiceMenu();
-
 void callService();
-
 void printMainMenu(double currentBalance);
-
 double insertCoins();
-
 void getCoffee(int choice);
-
 void printCoffeeIsDone();
-
 bool checkCurrentBalance(double currentBalance, double price);
-
 bool checkNumberOfCups();
-
 void printServiceEntrance();
-
 void addCups();
-
 void getRevenue();
-
 bool checkPin();
-
 void block();
-
 void printCoinsMenu();
+void printDeposit(double balanceIncrement);
+
 
 int main() {
     int choice = 0;
@@ -54,6 +46,8 @@ int main() {
             if (checkPin()) {
                 block();
             }
+            if (mainBalance == 0)
+                currentBalance = 0;
         } else if (choice == 1) {
             if (checkNumberOfCups()) {
                 balanceIncrement = insertCoins();
@@ -86,7 +80,6 @@ int main() {
 }
 
 void callService() {
-
     int serviceChoice = 0;
 
     while (true) {
@@ -138,13 +131,16 @@ void addCups() {
     int cups = 0;
     cout << "Please, insert cups: " << endl;
     cin >> cups;
-    numberOfCups += cups;
+    if (cups + numberOfCups > MAX_OF_CUPS)
+        cout << "Machine can't hold more cups";
+    else
+        numberOfCups += cups;
 }
 
 void getRevenue() {
     system("cls");
     cout << "Revenue withdrawn" << endl << endl;
-    Sleep(1500);
+    Sleep(SLEEP);
     mainBalance = 0;
 }
 
@@ -154,16 +150,26 @@ double insertCoins() {
 
     printCoinsMenu();
     cin >> choice;
-    if (choice == 1)
+    if (choice == 1) {
         balanceIncrement = 1;
-    else if (choice == 2)
+        printDeposit(balanceIncrement);
+    }
+    else if (choice == 2){
         balanceIncrement = 2;
-    else if (choice == 3)
+        printDeposit(balanceIncrement);
+    }
+    else if (choice == 3){
         balanceIncrement = 0.1;
-    else if (choice == 4)
+        printDeposit(balanceIncrement);
+    }
+    else if (choice == 4){
         balanceIncrement = 0.2;
-    else if (choice == 5)
+        printDeposit(balanceIncrement);
+    }
+    else if (choice == 5){
         balanceIncrement = 0.5;
+        printDeposit(balanceIncrement);
+    }
     else
         balanceIncrement = 0;
 
@@ -174,14 +180,14 @@ void printCoffeeIsDone() {
     system("cls");
     cout << "Done!" << endl;
     cout << "Enjoy your coffee ^_^" << endl;
-    Sleep(4000);
+    Sleep(SLEEP);
 }
 
 bool checkCurrentBalance(double currentBalance, double price) {
     if (currentBalance < price) {
         system("cls");
         cout << "Not enough money on balance!" << endl;
-        Sleep(4000);
+        Sleep(SLEEP);
     } else {
         return true;
     }
@@ -189,7 +195,7 @@ bool checkCurrentBalance(double currentBalance, double price) {
 }
 
 void getCoffee(int choice) {
-    for (int i = 20; i > 0; --i) {
+    for (int i = COFFEE_MAKING; i > 0; --i) {
         system("cls");
         if (choice == 2)
             cout << "Making Latte..." << endl;
@@ -198,7 +204,7 @@ void getCoffee(int choice) {
         if (choice == 4)
             cout << "Making Cappuccino..." << endl;
         cout << i << " seconds left\n";
-        Sleep(1000);
+        Sleep(SLEEP);
     }
     printCoffeeIsDone();
     numberOfCups--;
@@ -208,7 +214,7 @@ bool checkNumberOfCups() {
     if (numberOfCups < 1) {
         system("cls");
         cout << "Sorry, out of cups" << endl;
-        Sleep(3500);
+        Sleep(SLEEP);
         return false;
     }
     return true;
@@ -216,7 +222,6 @@ bool checkNumberOfCups() {
 
 bool checkPin() {
     int counter = 0;
-
     int usersPIN = 0;
     while (counter < TIMES_REPEAT) {
         printServiceEntrance();
@@ -227,7 +232,7 @@ bool checkPin() {
         } else {
             system("cls");
             cout << "Incorrect PIN\n";
-            Sleep(2500);
+            Sleep(SLEEP);
             counter++;
         }
     }
@@ -241,7 +246,7 @@ void block() {
     while (true) {
         system("cls");
         cout << "Machine is locked" << endl;
-        Sleep(1000);
+        Sleep(SLEEP);
     }
 }
 
@@ -253,4 +258,14 @@ void printCoinsMenu() {
     cout << "(3) 10 kopecks" << endl;
     cout << "(4) 20 kopecks" << endl;
     cout << "(5) 50 kopecks" << endl;
+}
+void printDeposit(double balanceIncrement) {
+    system("cls");
+    if (balanceIncrement == 2 )
+        cout << "Ok, " << balanceIncrement << " roubles was deposited" << endl;
+    else if(balanceIncrement == 1)
+        cout << "Ok, " << balanceIncrement << " rouble was deposited" << endl;
+    else
+        cout << "Ok, " << balanceIncrement * 100.0 << " kopecks was deposited" << endl;
+    Sleep(SLEEP);
 }

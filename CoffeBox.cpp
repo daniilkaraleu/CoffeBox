@@ -162,7 +162,7 @@ double insertCoins() {
     cout << "Insert rouble coin[1, 2] or kopeck coin[10, 20, 50]" << endl;
     cin >> coins;
 
-    if (coins != 1 or coins != 2)
+    if (coins != 1 and coins != 2)
         balanceIncrement = coins / 100;
     else
         balanceIncrement = coins;

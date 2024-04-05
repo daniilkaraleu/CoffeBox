@@ -162,8 +162,10 @@ double insertCoins() {
         balanceIncrement = 0.1;
     else if (choice == 4)
         balanceIncrement = 0.2;
-    else
+    else if (choice == 5)
         balanceIncrement = 0.5;
+    else
+        balanceIncrement = 0;
 
     return balanceIncrement;
 }

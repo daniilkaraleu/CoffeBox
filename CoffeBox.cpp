@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <cmath>
 
 using namespace std;
 
@@ -7,9 +8,10 @@ double const PRICE_LATTE = 1.9;
 double const PRICE_ESPRESSO = 1.9;
 double const PRICE_CAPPUCCINO = 1.9;
 int const PIN = 7815;
+int const TIMES_REPEAT = 3;
 
 double mainBalance = 0.0;
-int numberOfCups = 0;
+int numberOfCups = 2;
 
 void printServiceMenu();
 
@@ -33,28 +35,25 @@ void addCups();
 
 void getRevenue();
 
-void checkPin();
+bool checkPin();
+
+void block();
+
+void printCoinsMenu();
 
 int main() {
     int choice = 0;
     double balanceIncrement = 0;
     double currentBalance = 0;
-    int usersPIN = 0;
+
     while (true) {
         printMainMenu(currentBalance);
         cin >> choice;
 
         if (choice == 5) {
-            checkPin();
-//            printServiceEntrance();
-//            cin >> usersPIN;
-//            if (usersPIN == PIN)
-//                callService();
-//            else{
-//                system("cls");
-//                cout << "Incorrect PIN. Try again\n";
-//                Sleep(2500);
-//            }
+            if (checkPin()) {
+                block();
+            }
         } else if (choice == 1) {
             if (checkNumberOfCups()) {
                 balanceIncrement = insertCoins();
@@ -79,9 +78,7 @@ int main() {
         } else if (choice == -1) {
             break;
         } else {
-            system("cls");
-            cout << "Error! Incorrect data.";
-            Sleep(3000);
+            continue;
         }
 
     }
@@ -90,31 +87,29 @@ int main() {
 
 void callService() {
 
-    int serviceChoise = 0;
+    int serviceChoice = 0;
 
     while (true) {
-
         system("cls");
         printServiceMenu();
-        cin >> serviceChoise;
+        cin >> serviceChoice;
 
-        if (serviceChoise == 1) {
+        if (serviceChoice == 1) {
             addCups();
-        } else if (serviceChoise == 2) {
+        } else if (serviceChoice == 2) {
             getRevenue();
             continue;
-        } else if (serviceChoise == 3) {
+        } else if (serviceChoice == 3) {
             break;
         } else {
-            system("cls");
-            cout << "Error! Incorrect input.";
-            Sleep(1500);
             break;
         }
     }
 }
 
 void printMainMenu(double currentBalance) {
+    if (currentBalance < 0.01)
+        currentBalance = round(currentBalance);
     system("cls");
     cout << "Balance: " << currentBalance << " BYN" << endl;
     cout << "(1) Insert coins" << endl;
@@ -122,7 +117,6 @@ void printMainMenu(double currentBalance) {
     cout << "(3) Make Espresso    " << PRICE_ESPRESSO << " BYN" << endl;
     cout << "(4) Make Cappuccino  " << PRICE_CAPPUCCINO << " BYN" << endl;
     cout << "(5) Service" << endl;
-    return;
 }
 
 void printServiceEntrance() {
@@ -155,17 +149,22 @@ void getRevenue() {
 }
 
 double insertCoins() {
-    double coins = 0;
+    double choice = 0;
     double balanceIncrement = 0;
 
-    system("cls");
-    cout << "Insert rouble coin[1, 2] or kopeck coin[10, 20, 50]" << endl;
-    cin >> coins;
-
-    if (coins != 1 and coins != 2)
-        balanceIncrement = coins / 100;
+    printCoinsMenu();
+    cin >> choice;
+    if (choice == 1)
+        balanceIncrement = 1;
+    else if (choice == 2)
+        balanceIncrement = 2;
+    else if (choice == 3)
+        balanceIncrement = 0.1;
+    else if (choice == 4)
+        balanceIncrement = 0.2;
     else
-        balanceIncrement = coins;
+        balanceIncrement = 0.5;
+
     return balanceIncrement;
 }
 
@@ -201,8 +200,6 @@ void getCoffee(int choice) {
     }
     printCoffeeIsDone();
     numberOfCups--;
-
-    return;
 }
 
 bool checkNumberOfCups() {
@@ -215,15 +212,43 @@ bool checkNumberOfCups() {
     return true;
 }
 
-void checkPin() {
+bool checkPin() {
+    int counter = 0;
+
     int usersPIN = 0;
-    printServiceEntrance();
-    cin >> usersPIN;
-    if (usersPIN == PIN)
-        callService();
-    else {
-        system("cls");
-        cout << "Incorrect PIN. Try again\n";
-        Sleep(2500);
+    while (counter < TIMES_REPEAT) {
+        printServiceEntrance();
+        cin >> usersPIN;
+        if (usersPIN == PIN) {
+            callService();
+            break;
+        } else {
+            system("cls");
+            cout << "Incorrect PIN\n";
+            Sleep(2500);
+            counter++;
+        }
     }
+    if (counter >= TIMES_REPEAT) {
+        return true;
+    }
+    return false;
+}
+
+void block() {
+    while (true) {
+        system("cls");
+        cout << "Machine is locked" << endl;
+        Sleep(1000);
+    }
+}
+
+void printCoinsMenu() {
+    system("cls");
+    cout << "Insert rouble coin or kopeck coin:" << endl;
+    cout << "(1) 1 rouble" << endl;
+    cout << "(2) 2 roubles" << endl;
+    cout << "(3) 10 kopecks" << endl;
+    cout << "(4) 20 kopecks" << endl;
+    cout << "(5) 50 kopecks" << endl;
 }

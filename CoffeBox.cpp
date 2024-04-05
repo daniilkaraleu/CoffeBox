@@ -9,7 +9,7 @@ double const PRICE_CAPPUCCINO = 1.9;
 int const PIN = 7815;
 
 double mainBalance = 0.0;
-int numberOfCups = 1;
+int numberOfCups = 0;
 
 void printServiceMenu();
 

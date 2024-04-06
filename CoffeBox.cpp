@@ -4,9 +4,9 @@
 
 using namespace std;
 
-double const PRICE_LATTE = 2.3;
-double const PRICE_ESPRESSO = 1.9;
-double const PRICE_CAPPUCCINO = 2.3;
+double const PRICE_LATTE = 1.9;
+double const PRICE_ESPRESSO = 1.5;
+double const PRICE_CAPPUCCINO = 1.9;
 int const PIN = 7815;
 int const TIMES_REPEAT = 3;
 int const SLEEP = 2500;
@@ -15,6 +15,7 @@ int const MAX_OF_CUPS = 700;
 
 double mainBalance = 0.0;
 int numberOfCups = 7;
+bool machineWasOpened = false;
 
 void printServiceMenu();
 void callService();
@@ -32,22 +33,21 @@ void block();
 void printCoinsMenu();
 void printDeposit(double balanceIncrement);
 
-
 int main() {
     int choice = 0;
-    double balanceIncrement = 0;
-    double currentBalance = 0;
+    double balanceIncrement = 0.0;
+    double currentBalance = 0.0;
 
     while (true) {
         printMainMenu(currentBalance);
         cin >> choice;
-
         if (choice == 5) {
             if (checkPin()) {
                 block();
             }
-            if (mainBalance == 0)
+            if (machineWasOpened)
                 currentBalance = 0;
+            machineWasOpened = false;
         } else if (choice == 1) {
             if (checkNumberOfCups()) {
                 balanceIncrement = insertCoins();
@@ -86,11 +86,12 @@ void callService() {
         system("cls");
         printServiceMenu();
         cin >> serviceChoice;
-
         if (serviceChoice == 1) {
             addCups();
+            machineWasOpened = true;
         } else if (serviceChoice == 2) {
             getRevenue();
+            machineWasOpened = true;
             continue;
         } else if (serviceChoice == 3) {
             break;
@@ -145,8 +146,8 @@ void getRevenue() {
 }
 
 double insertCoins() {
-    double choice = 0;
-    double balanceIncrement = 0;
+    double choice = 0.0;
+    double balanceIncrement = 0.0;
 
     printCoinsMenu();
     cin >> choice;
@@ -223,6 +224,7 @@ bool checkNumberOfCups() {
 bool checkPin() {
     int counter = 0;
     int usersPIN = 0;
+
     while (counter < TIMES_REPEAT) {
         printServiceEntrance();
         cin >> usersPIN;

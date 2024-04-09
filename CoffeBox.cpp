@@ -132,8 +132,11 @@ void addCups() {
     int cups = 0;
     cout << "Please, insert cups: " << endl;
     cin >> cups;
-    if (cups + numberOfCups > MAX_OF_CUPS)
-        cout << "Machine can't hold more cups";
+    if (cups + numberOfCups > MAX_OF_CUPS) {
+        system("cls");
+        cout << "Error! Maximum capacity of cups is 700";
+        Sleep(SLEEP);
+    }
     else
         numberOfCups += cups;
 }
@@ -205,7 +208,7 @@ void getCoffee(int choice) {
         if (choice == 4)
             cout << "Making Cappuccino..." << endl;
         cout << i << " seconds left\n";
-        Sleep(SLEEP);
+        Sleep(1000);
     }
     printCoffeeIsDone();
     numberOfCups--;
